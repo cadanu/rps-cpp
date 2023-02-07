@@ -3,12 +3,12 @@
 // RockPaperScissors.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include "Utility.h"
+#include "GamePlay.h"
+#include "Player.h"
 
 #include <iostream>
-#include <algorithm>
+//#include <algorithm>
 #include <string>
-
-#define RAND_MAX 3
 
 using std::cout;
 using std::cin;
@@ -22,25 +22,20 @@ int main()
 	bool userNotDefined = true;
 	bool inputNotDefined = true;
 	bool on = true;
-	int random;
-	int userScore = 0;
-	int userWins = 0;
-	int userLosses = 0;
-	int userTies = 0;
-	string dummyInsert = "[]";
 	string userName = "";
 	string userInput = "";
 	string userContinue = "";
-	string heroes[3] = { "ROCK", "PAPER", "SCISSORS" };
+	// pointers
+	GamePlay* gamePlay = new GamePlay();
+	Player* computerPlayer = new Player("COMPUTER");
+	Player* userPlayer = new Player();// user
 
-
-	//Log(to_string(RAND_MAX));// check
-
-	// begin program
-	cout << "Welcome to Rock, Paper, Scissors, the utlimate clash. Type 'x' to quit or enter your Username below. It's ok if you're a new player, just enter your username when prompted but remember, your username should be 8 characters long or more." << endl;
-
+	// get username
+	cout << "Welcome to Rock, Paper, Scissors, the ULTIMATE CLASH." << endl;
+	cout << "Type 'x' to quit. New or returning players enter your Username below." << endl;
 	while (userNotDefined)
 	{	
+		userName.erase();
 		cout << "Username: ";
 		cin >> userName;
 		transform(userName.begin(), userName.end(), userName.begin(), ::toupper);// user input to uppercase https://stackoverflow.com/questions/23418390/how-to-convert-a-c-string-to-uppercase#23418474
@@ -57,21 +52,25 @@ int main()
 		}
 		else
 		{
-			// do something
 			break;
 		}
 	}
 	clrscr();
 
-	while (on)
+	// set player - user, and data
+	userPlayer->setUserName(userName);
+	// end set player
+	
+	while (on)// play game
 	{
-		// computer choice
-		random = std::rand();
-		Log("random: " + to_string(random));// check
+		// set player - computer		
+		computerPlayer->randomHero();
+		// end set player
 
-		cout << "Hi " + userName + ", welcome to Rock, Paper, Scissors, the utlimate clash. Type 'x' to quit or 'rank' for leaderboard." << endl;
-		cout << "Your score is " + dummyInsert + ". You have " + dummyInsert + " wins, " + dummyInsert + " losses, and " + dummyInsert + " ties." << endl;
-		cout << "Please choose your hero (Rock, Paper, or Scissors) : ";
+		cout << "Welcome to Rock, Paper, Scissors, the ULTIMATE CLASH." << endl;
+		cout << "Type 'x' to quit or 'rank' for leaderboard." << endl;
+		cout << userName + ", your score is " + to_string(userPlayer->getPoints()) + ". You have " + to_string(userPlayer->getWins()) + " win(s), " + to_string(userPlayer->getLosses()) + " loss(es), and " + to_string(userPlayer->getTies()) + " tie(s)." << endl;
+		cout << "Choose your HERO [Rock, Paper, or Scissors]: ";
 		cin >> userInput;
 		transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper);// see above
 
@@ -81,28 +80,40 @@ int main()
 		}
 		else if (userInput == "ROCK" || userInput == "PAPER" || userInput == "SCISSORS")
 		{
-			//Log(userInput);// check
-			cout << endl << userInput << endl << endl;
+			// set player - user
+			userPlayer->setHeroChoice(userInput);
+			// end set player
 
+			cout << endl << " (   (  ( ( ! ! ! CLASH ! ! ! ) )  )   )" << endl << endl;
+			gamePlay->evaluateClash(userPlayer, computerPlayer);// user always in first pos
+
+			// housekeeping
+			gamePlay->cleanWinner();
+			computerPlayer->cleanPlayerHero();
+			userPlayer->cleanPlayerHero();
+
+			// continue playing?
 			while (inputNotDefined)
 			{
-				cout << "Would you like to continue playing [y/n]?" << endl;
+				cout << "Would you like to continue playing [y/n]? ";
 				cin >> userContinue;
 				transform(userContinue.begin(), userContinue.end(), userContinue.begin(), ::toupper);// see above
 				
-				if (userContinue == "N" || userContinue == "X")
+				if (userContinue == "N" || userContinue == "NO" || userContinue == "X")
 				{
 					on = false;
 					break;
 				}
-				else if (userContinue != "Y")
+				else if (userContinue == "Y" || userContinue == "YES")
 				{
 					clrscr();
-					cout << "Please enter a valid response." << endl;
+					break;				
+					//Log(userContinue);
 				}
 				else
 				{
-					break;
+					clrscr();
+					cout << "Please enter a valid response." << endl;
 				}
 			}
 		}
@@ -115,6 +126,10 @@ int main()
 
 	clrscr();
 	cout << "Thankyou for Playing Rock, Paper, Scissors!" << endl;
+
+	delete gamePlay;
+	delete userPlayer;
+	delete computerPlayer;
 
 	return 0;
 }
