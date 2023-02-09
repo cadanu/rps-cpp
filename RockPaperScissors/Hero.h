@@ -6,7 +6,7 @@
 #include <random>
 
 using std::string;
-//using std::to_string;
+
 
 class Hero
 {
