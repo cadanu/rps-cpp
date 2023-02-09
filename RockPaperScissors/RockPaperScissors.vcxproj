@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -134,6 +136,8 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="GameData.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Player.h" />
