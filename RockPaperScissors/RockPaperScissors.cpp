@@ -9,8 +9,6 @@
 #include "FileSystem.h"
 
 #include <iostream>
-//#include <algorithm>
-//#include <string>
 
 using std::cout;
 using std::cin;
@@ -20,9 +18,6 @@ using std::to_string;
 
 int main(int argc, char** argv)
 {
-	// testing
-	//FileSystem::callDir(argc, argv, "./data/");
-	
 	// declarations
 	bool userNotDefined = true;
 	bool inputNotDefined = true;
@@ -45,8 +40,8 @@ int main(int argc, char** argv)
 		userName.erase();
 		cout << "Username: ";
 		cin >> userName;
-		transform(userName.begin(), userName.end(), userName.begin(), ::toupper);// user input to uppercase https://stackoverflow.com/questions/23418390/how-to-convert-a-c-string-to-uppercase#23418474
-
+		// user input to uppercase https://stackoverflow.com/questions/23418390/how-to-convert-a-c-string-to-uppercase#23418474
+		transform(userName.begin(), userName.end(), userName.begin(), ::toupper);
 		if (userName == "X")
 		{
 			on = false;
@@ -55,7 +50,7 @@ int main(int argc, char** argv)
 		else if (userName.length() < 8)
 		{
 			clrscr();
-			cout << "Username should be 8 characters or more in length, please try again or type 'x' to quit." << endl;
+			cout << "Username should be 8 characters or more in length with no spaces, please try again or type 'x' to quit." << endl;
 		}
 		else
 		{
@@ -79,12 +74,13 @@ int main(int argc, char** argv)
 		computerPlayer->randomHero();
 
 		cout << "Welcome to Rock, Paper, Scissors, the ULTIMATE CLASH." << endl;
-		cout << "Type 'x' to quit or 'rank' for leaderboard." << endl;
+		cout << "Type 'x' to quit or 'rank' to view leaderboard." << endl;
 		cout << userPlayer->getUserName() + ", your score is " + to_string(userPlayer->getPoints()) + ". You have " + to_string(userPlayer->getWins()) + " win(s), " + to_string(userPlayer->getLosses()) + " loss(es), and " + to_string(userPlayer->getTies()) + " tie(s)." << endl;
 		cout << "Choose your HERO [Rock, Paper, or Scissors]: ";
 		cin >> userInput;
-		transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper);// see above
+		transform(userInput.begin(), userInput.end(), userInput.begin(), ::toupper);// uppercase for uniformity - see above
 
+		// let user escape whenever they so choose
 		if (userInput == "X")
 		{
 			endGame = true;
@@ -92,8 +88,12 @@ int main(int argc, char** argv)
 		}
 		else if (userInput == "RANK")
 		{
+			// let user see their current data
+			userData->setScoreToFile();
 			clrscr();
-			FileSystem::callDir(argc, argv, "./data/");
+
+			// display the leaderboard to the screen
+			FileSystem::getLeaderBoard(argc, argv, "./data/");
 			clrscr();
 		}
 		else if (userInput == "ROCK" || userInput == "PAPER" || userInput == "SCISSORS")
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 			// set player - user
 			userPlayer->setHeroChoice(userInput);
 
-			cout << endl << " (   (  ( ( ! ! ! CLASH ! ! ! ) )  )   )" << endl << endl;
+			cout << "\n (   (  ( ( ! ! ! CLASH ! ! ! ) )  )   ) \n" << endl;
 			gamePlay->evaluateClash(userPlayer, computerPlayer);// user always in first pos
 
 			// housekeeping - reset
@@ -138,7 +138,7 @@ int main(int argc, char** argv)
 		else
 		{
 			clrscr();
-			cout << "Invalid entry, please try again." << endl;
+			cout << "Invalid entry, please try again.\n" << endl;
 		}
 		// if user quits then finish up
 		if (endGame)

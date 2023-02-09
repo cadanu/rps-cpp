@@ -21,13 +21,6 @@ Player::Player(string _userName)
 	m_heroObject = nullptr;	
 }
 
-//Player::Player(string _userName, string _heroChoice)
-//{
-//	m_userName = _userName;
-//	m_points = 0;
-//	m_heroObject = new Hero(_heroChoice);
-//}
-
 void Player::addPoints(int _points)
 {
 	m_points += _points;

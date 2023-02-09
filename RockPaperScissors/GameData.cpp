@@ -37,8 +37,6 @@ void GameData::getScoreFromFile()
 	m_filer.open("./data/" + m_user->getUserName() + ".txt", ios::in);
 	if (m_filer.is_open())// file fills array
 	{
-		//Log("std::size(scoreArr): " + to_string(size(scoreArr)));
-
 		int incr = 0;
 		string line;
 		while (getline(m_filer, line))
@@ -46,7 +44,6 @@ void GameData::getScoreFromFile()
 			if (incr < size(scoreArr))
 			{
 				scoreArr[incr] = line;
-				//Log("scoreArr[" + to_string(incr) + "]: " + line);
 				incr++;
 			}
 		}
@@ -58,7 +55,6 @@ void GameData::getScoreFromFile()
 				scoreArr[i] = to_string(0);
 			}
 		}
-
 		// add array to Player*
 		m_user->addPoints(stoi(scoreArr[0]));
 		m_user->addWins(stoi(scoreArr[1]));
@@ -70,51 +66,9 @@ void GameData::getScoreFromFile()
 		{
 			m_user->addPoints( (0 - m_user->getPoints()) + (m_user->getPoints() != ((m_user->getWins() * 3) + (m_user->getTies()))) );
 		}
-
 	}
 	m_filer.close();
 }
-
-//void GameData::displayScoresFromFiles(string _userName)
-//{
-	//opendir("./data/");
-	//DIR* dataDir = new DIR();
-	//readdir(dataDir);
-	//m_filer.open("./data/" + m_user->getUserName() + ".txt", ios::in);
-	//if (m_filer.is_open())// file fills array
-	//{
-	//	//Log("std::size(scoreArr): " + to_string(size(scoreArr)));
-	//	int incr = 0;
-	//	string line;
-	//	while (getline(m_filer, line))
-	//	{
-	//		if (incr < size(scoreArr))
-	//		{
-	//			scoreArr[incr] = line;
-	//			//Log("scoreArr[" + to_string(incr) + "]: " + line);
-	//			incr++;
-	//		}
-	//	}
-	//	for (int i = 0; i < size(scoreArr); i++)
-	//	{
-	//		if (scoreArr[i] == "")
-	//		{
-	//			scoreArr[i] = to_string(0);
-	//		}
-	//	}
-	//	// add array to Player*
-	//	m_user->addPoints(stoi(scoreArr[0]));
-	//	m_user->addWins(stoi(scoreArr[1]));
-	//	m_user->addLosses(stoi(scoreArr[2]));
-	//	m_user->addTies(stoi(scoreArr[3]));
-	//	// points validity check
-	//	if (m_user->getPoints() != ((m_user->getWins() * 3) + (m_user->getTies())))
-	//	{
-	//		m_user->addPoints((0 - m_user->getPoints()) + (m_user->getPoints() != ((m_user->getWins() * 3) + (m_user->getTies()))));
-	//	}
-	//}
-	//m_filer.close();
-//}
 
 void GameData::cleanGameData()
 {

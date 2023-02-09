@@ -7,8 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
+#include <array>
 #include <list>
+#include <conio.h>
 
 using std::fstream;
 using std::string;
@@ -19,19 +20,24 @@ using std::getline;
 using std::ios;
 using std::stoi;
 using std::size;
+using std::array;
 using std::list;
 
-//using namespace std;
 
 class FileSystem
 {
 //private:
 	list<string> dirList;
-	int dirArr[4] = { 0,0,0,0 };
+	list<string> dirListTemp;
+	array<string,2> nameArr = { "","" };
+	array<int,5> dirArr = { 0,0,0,0,0 };
+	list<array<int,5>> dirArrList;
+	list<array<string,2>> nameArrList;
+	list<array<string, 2>> nameArrListTemp;
 	fstream m_filer;
 
 public:
 	FileSystem();
-	int listdir(const char*);
-	static void callDir(int, char**, const char*);
+	int leaderBoard(const char*);
+	static void getLeaderBoard(int, char**, const char*);
 };

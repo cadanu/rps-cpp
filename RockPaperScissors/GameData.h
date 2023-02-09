@@ -1,13 +1,9 @@
 #pragma once
 
-//#include "Utility.h"
 #include "Player.h"
-//#include "dirent.h"// check
 
 #include <fstream>
 #include <string>
-//#include <filesystem>
-//#include <array>
 
 using std::fstream;
 using std::ios;
@@ -22,7 +18,6 @@ using std::size;
 class GameData
 {
 //private:
-	//string m_userName;
 	Player* m_user;
 	string scoreArr[4] = { "0","0","0","0" };
 	fstream m_filer;
@@ -32,9 +27,6 @@ public:
 	GameData(Player*);
 	void setScoreToFile();
 	void getScoreFromFile();
-	void displayScoresFromFiles(string);
 	void cleanGameData();
-	/*void setUser(Player*);
-	Player* getUser();*/
 }; 
 

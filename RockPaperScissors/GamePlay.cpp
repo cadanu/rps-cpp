@@ -31,11 +31,6 @@ void GamePlay::evaluateClash(Player* _player1, Player* _player2)
 	string p1HeroWeakness = _player1->getHeroChoice()->getWeakness();
 	string p2HeroWeakness = _player2->getHeroChoice()->getWeakness();
 
-	/*cout << "p1HeroName: " + p1HeroName << endl;
-	cout << "p2HeroName: " + p2HeroName << endl;
-	cout << "p1HeroWeakness: " + p1HeroWeakness << endl;
-	cout << "p2HeroWeakness: " + p2HeroWeakness << endl;*/
-
 	if (p1HeroName == p2HeroName)
 	{
 		m_tie = true;
@@ -61,7 +56,6 @@ void GamePlay::evaluateClash(Player* _player1, Player* _player2)
 			calculateStats(_player2, "LOSSES");
 			tempLoser = _player2;
 		}
-
 		cout << m_winner->getHeroChoice()->getName() + m_winner->getHeroChoice()->getWinAction() + tempLoser->getHeroChoice()->getName() << endl;
 		cout << m_winner->getUserName() + " wins!" << endl;
 

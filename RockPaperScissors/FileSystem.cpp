@@ -5,7 +5,7 @@ FileSystem::FileSystem()
 {}
 
 // https://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/dirent.h
-int FileSystem::listdir(const char* _path)
+int FileSystem::leaderBoard(const char* _path)
 {
 	// init vars
 	struct dirent* m_ent;
@@ -27,53 +27,96 @@ int FileSystem::listdir(const char* _path)
 		if (((string)m_ent->d_name != ".") && ((string)m_ent->d_name != ".."))
 		{
 			// push file name values to list
-			dirList.push_back((string)m_ent->d_name);
+			dirList.push_back((string)m_ent->d_name);// list gives ability to sort
 			incr++;
 		}
 	}
-	closedir(m_dir);
+	closedir(m_dir);// close directory
 
-	// print header
-	cout << "LEADERBOARD:\n" << endl;
-	cout << "NAME\t\t\tPOINTS\t\tWINS\t\tLOSSES\t\tTIES" << endl;
-
-	dirList.sort();// smallest biggest
-	dirList.reverse();// biggest to smallest
-	while(!dirList.empty())
+	dirListTemp = dirList;
+	int order = 0;
+	while(!dirListTemp.empty())// perhaps change to iterator?
 	{
 		// init vars
 		incr = 0;
 		string line;
 
 		// open file
-		m_filer.open(_path + dirList.front(), ios::in);
+		m_filer.open(_path + dirListTemp.front(), ios::in);
 		if (m_filer.is_open())
 		{
 			while (getline(m_filer, line))
 			{
-				// set score values from file into array
-				dirArr[incr] = stoi(line);
-				incr++;
+				if (incr < dirArr.size() - 1)
+				{
+					// set score values from file into array
+					dirArr[incr] = stoi(line);
+					incr++;
+				}
 			}
 		}
-		// build string according to username with array values
-		string scoreLine = dirList.front();
-		for (int i = 0; i < size(dirArr); i++)
+		m_filer.close();
+
+		// for sort - order id
+		incr++;
+		order++;
+		dirArr[4] = order;
+		nameArr = { dirListTemp.front(), to_string(order) };
+
+		// add arrays to list
+		dirArrList.push_back(dirArr);
+		nameArrList.push_back(nameArr);
+		dirListTemp.pop_front();// pop
+	}
+
+	// sort score
+	dirArrList.sort();
+	dirArrList.reverse();
+
+	cout << "LEADERBOARD:\n" << endl;
+	cout << "NAME\t\t\tPOINTS\t\tWINS\t\tLOSSES\t\tTIES" << endl;
+	// build string according to username with array values
+	while (!dirArrList.empty())// dirArrList holds the score arrays
+	{
+		// init vars
+		string scoreLine;
+
+		// pass list to temp list
+		nameArrListTemp = nameArrList;
+		while (!nameArrListTemp.empty())
 		{
-			scoreLine += "\t\t" + to_string(dirArr[i]);
+			// match order id's
+			if (stoi(nameArrListTemp.front()[1]) == dirArrList.front()[4])
+			{
+				// username is matched to score
+				scoreLine = nameArrListTemp.front()[0];
+				break;
+			}
+			else nameArrListTemp.pop_front();
+		}
+		nameArrListTemp.clear();
+		scoreLine.erase(scoreLine.find(".txt"), scoreLine.length() - 1);
+
+		for (int i = 0; i < (dirArrList.front().size())-1; i++)
+		{
+			scoreLine += "\t\t" + to_string(dirArrList.front()[i]);
 		}
 		cout << scoreLine << endl;// print to console
-		dirList.pop_front();
+
+		dirArrList.pop_front();
 	}
+	
+	printf ("\n");
+
 	return 0;
 }
 
-void FileSystem::callDir(int argc, char** argv, const char* _path)
+void FileSystem::getLeaderBoard(int argc, char** argv, const char* _path)
 {
 	FileSystem* fs = new FileSystem();
 
 	if (argc == 1)// call function with specified path
-		fs->listdir((_path));
+		fs->leaderBoard((_path));
 
 	system("pause");
 }

@@ -2,9 +2,8 @@
 
 #include "Hero.h"
 
-//#include <string>
-
 using std::string;
+
 
 class Player
 {
@@ -13,14 +12,16 @@ class Player
 	int m_wins;
 	int m_losses;
 	int m_ties;
+	//int ID;
+	//void setID();
 	string m_userName;
 	Hero* m_heroObject;
 
 public:
 	Player();
 	Player(string _userName);
-	//Player(string _userName, string _heroChoice);
-
+	
+	//int getID();
 	void addPoints(int);
 	int getPoints();
 	void addWins(int);
